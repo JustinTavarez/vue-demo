@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>10 Minute Vue Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .done { text-decoration: line-through; color: #999; cursor: pointer; }
+  </style>
+  <script type="module">
+    import { createApp, ref, computed } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
+
+    createApp({
+      setup() {
+        const newTask = ref('');
+        const tasks = ref([
+          { text: 'Learn declarative rendering', done: false },
+          { text: 'Practice reactivity', done: false }
+        ]);
+
+        function addTask() {
+          if (newTask.value.trim() !== '') {
+            tasks.value.push({ text: newTask.value.trim(), done: false });
+            newTask.value = '';
+          }
+        }
+
+        function toggleTask(task) {
+          task.done = !task.done;
+        }
+
+        const remaining = computed(() => tasks.value.filter(t => !t.done).length);
+
+        return { newTask, tasks, addTask, toggleTask, remaining };
+      }
+    }).mount('#app');
+  </script>
+</head>
+<body>
+  <h1>Vue Demo</h1>
+  <div id="app">
+    <p>You have {{ remaining }} unfinished task(s).</p>
+    <input v-model="newTask" @keyup.enter="addTask" placeholder="Add a task">
+    <button @click="addTask">Add</button>
+    <ul>
+      <li v-for="task in tasks" :key="task.text" @click="toggleTask(task)" :class="{ done: task.done }">
+        {{ task.text }}
+      </li>
+    </ul>
+  </div>
+</body>
+</html>
