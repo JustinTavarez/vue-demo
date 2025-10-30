@@ -1,6 +1,6 @@
-# Vue.js + MVC Architecture Demo
+# Vue.js TO-DO App - MVC Architecture Demo
 
-A comprehensive demonstration of the **Model-View-Controller (MVC)** architectural pattern implemented with Vue.js 3. This project showcases how to organize a web application into three distinct layers: Models (data & business logic), Views (user interface), and Controllers (application logic).
+A clean demonstration of the **Model-View-Controller (MVC)** architectural pattern implemented with Vue.js 3. This task management application showcases how to organize a web application into three distinct layers: Models (data & business logic), Views (user interface), and Controllers (application logic).
 
 ## 🏗️ What is MVC?
 
@@ -14,7 +14,7 @@ A comprehensive demonstration of the **Model-View-Controller (MVC)** architectur
 - **Responsibility:** Presents data to the user through the UI
 - **What it does:** Renders HTML, handles user interactions, displays model data
 - **Who accesses it:** Receives data from controllers through props
-- **Example:** Vue components like `TaskManager` and `UserDirectory`
+- **Example:** Vue components like `TaskManager` and `TaskItem`
 
 ### Controller
 - **Responsibility:** Acts as the middleman between Model and View
@@ -24,9 +24,8 @@ A comprehensive demonstration of the **Model-View-Controller (MVC)** architectur
 
 ## 🚀 Data Flow in MVC
 
-```
 ┌─────────────────────────────────────────────────────────────┐
-│                     Data Flow Diagram                         │
+│                     Data Flow Diagram                       │
 └─────────────────────────────────────────────────────────────┘
 
 User Interaction (clicks button, types text, etc.)
@@ -40,24 +39,20 @@ User Interaction (clicks button, types text, etc.)
          CONTROLLER (Notify listeners)
                       ↓
             VIEW (Re-render with new data)
-```
 
 ## 📁 Project Structure
 
-```
 vue-demo/
 ├── models/
-│   ├── Task.js              # Task class & TaskStore
-│   └── User.js              # User class & UserStore
+│   └── Task.js              # Task class & TaskStore
 ├── controllers/
-│   ├── TaskController.js    # Handles task operations
-│   └── UserController.js    # Handles user operations
+│   └── TaskController.js    # Handles task operations
 ├── views/
-│   └── components.js        # Vue components (TaskManager, UserDirectory, etc.)
+│   ├── components.js        # Vue components
+│   └── style.css            # Styling
 ├── app.js                   # Main app file - ties everything together
 ├── index.html               # HTML entry point
 └── README.md               # This file
-```
 
 ## 📦 Models Layer
 
@@ -90,28 +85,6 @@ class TaskStore {
 }
 ```
 
-### User Model (`models/User.js`)
-
-```javascript
-// Individual user object
-class User {
-  constructor(id, name, email, role, avatar)
-  updateInfo(name, email, role)  // Update user details
-  getDisplayName()                // Get formatted name
-  isValidEmail()                  // Email validation
-  toJSON()                        // Convert to JSON
-}
-
-// Collection manager
-class UserStore {
-  addUser(name, email, role, avatar)     // Create new user
-  removeUser(userId)                     // Delete user
-  getAllUsers()                          // Retrieve all users
-  getUsersByRole(role)                   // Filter by role
-  getCountByRole(role)                   // Count by role
-}
-```
-
 ## 🎮 Controllers Layer
 
 ### What Controllers Do
@@ -132,32 +105,12 @@ class TaskController {
 
   // Provide data to View
   getAllTasks()                   // Get tasks for rendering
-  getTaskStats()                  // Get statistics
+  getTaskStats()                  // Get statistics (total, completed, remaining)
   getFilteredTasks(filter)        // Get filtered task list
 
   // Notify system
   subscribe(listener)             // Register for updates
   notifyListeners()               // Tell Views about changes
-}
-```
-
-### UserController (`controllers/UserController.js`)
-
-```javascript
-class UserController {
-  // Handle user actions
-  handleAddUser(name, email, role, avatar)
-  handleDeleteUser(userId)
-  handleUpdateUser(userId, name, email, role)
-
-  // Provide data to View
-  getAllUsers()                   // Get all users
-  getUser(userId)                 // Get single user
-  getUsersByRole(role)            // Filter by role
-  getUserStats()                  // Get statistics
-
-  // Validation
-  validateEmail(email)            // Email format validation
 }
 ```
 
@@ -181,21 +134,7 @@ class UserController {
 - Reusable component for individual tasks
 - Shows task text, checkbox, and delete button
 - Emits events back to parent component
-
-#### UserDirectory Component
-- Displays user statistics
-- Grid layout of users
-- Each user shown as UserCard component
-
-#### UserCard Component
-- Reusable component for individual users
-- Shows avatar, name, email, and role
-- Interactive hover effects
-
-#### About Component
-- Educational page explaining MVC
-- Shows project structure
-- Describes data flow and benefits
+- Visual feedback for completed tasks
 
 ## 🔄 How Everything Works Together
 
@@ -292,17 +231,14 @@ npx http-server -p 5173
 ### `models/Task.js`
 Defines Task data model and TaskStore for managing a collection of tasks. Handles localStorage persistence and all task-related business logic.
 
-### `models/User.js`
-Defines User data model and UserStore for managing a collection of users. Includes email validation and role-based queries.
-
 ### `controllers/TaskController.js`
 Mediates between TaskStore (Model) and TaskManager (View). Handles all user interactions with tasks and notifies View of changes.
 
-### `controllers/UserController.js`
-Mediates between UserStore (Model) and UserDirectory (View). Handles user management operations and provides statistics.
-
 ### `views/components.js`
-Contains all Vue components (TaskManager, TaskItem, UserDirectory, UserCard, About). These are the UI layer of the MVC architecture.
+Contains all Vue components (TaskManager, TaskItem). These are the UI layer of the MVC architecture.
+
+### `views/style.css`
+Stylesheet with modern CSS including gradients, animations, and responsive design for the task management interface.
 
 ### `app.js`
 Main application file. Instantiates models and controllers, configures Vue, and orchestrates the entire application.
@@ -344,10 +280,14 @@ After exploring this project, you'll understand:
 - Safari 10+
 - Opera 38+
 
-## 📝 License
+## 🎨 Features
 
-MIT License - Feel free to use and modify this project for educational purposes.
+-  Add new tasks
+-  Mark tasks as complete/incomplete
+-  Delete tasks
+-  View task statistics (total, completed, remaining)
+-  Data persistence with localStorage
+-  Beautiful, modern UI design
+-  Responsive layout
 
----
-
-**Happy Learning!** 🎉 Explore the code, experiment with modifications, and master MVC architecture with Vue.js. 
+**Happy Learning!** 🎉 Explore the code, experiment with modifications, and master MVC architecture with Vue.js.
