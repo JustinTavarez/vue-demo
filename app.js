@@ -27,8 +27,8 @@ const userController = new UserController(userStore);
 const app = window.Vue.createApp({
   template: `
     <header>
-      <h1>Vue.js + MVC Architecture Demo</h1>
-      <p>Separation of Concerns: Model • View • Controller</p>
+      <h1>Vue TO-DO Demo</h1>
+      <p>Created by Justin Tavarez</p>
     </header>
 
     <nav>
