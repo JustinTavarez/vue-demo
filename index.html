@@ -11,8 +11,48 @@
 
   <!-- Import Vue.js from CDN -->
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  
-  <!-- Import and run the app -->
-  <script type="module" src="app.js"></script>
+  <!-- Import vue3-sfc-loader -->
+  <script src="https://cdn.jsdelivr.net/npm/vue3-sfc-loader/dist/vue3-sfc-loader.js"></script>
+
+  <!-- Application script -->
+  <script type="module">
+    import { TaskStore } from './models/Task.js';
+    import { TaskController } from './controllers/TaskController.js';
+
+    const options = {
+      moduleCache: { vue: Vue },
+      async getFile(url) {
+        const res = await fetch(url);
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        }
+        return {
+          getContentData: asBinary => asBinary ? res.arrayBuffer() : res.text(),
+        };
+      },
+      addStyle(textContent) {
+        const style = document.createElement('style');
+        style.textContent = textContent;
+        document.head.appendChild(style);
+      },
+    };
+
+    const { loadModule } = window['vue3-sfc-loader'];
+
+    const taskStore = new TaskStore();
+    const taskController = new TaskController(taskStore);
+
+    const app = Vue.createApp({
+      components: {
+        TaskManager: Vue.defineAsyncComponent(() => loadModule('./views/TaskManager.vue', options)),
+      },
+      setup() {
+        return { controller: taskController };
+      },
+      template: '<TaskManager :controller="controller" />',
+    });
+
+    app.mount('#app');
+  </script>
 </body>
 </html>
