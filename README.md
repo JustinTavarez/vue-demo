@@ -43,16 +43,21 @@ User Interaction (clicks button, types text, etc.)
 ## 📁 Project Structure
 
 vue-demo/
-├── models/
-│   └── Task.js              # Task class & TaskStore
-├── controllers/
-│   └── TaskController.js    # Handles task operations
-├── views/
-│   ├── components.js        # Vue components
-│   └── style.css            # Styling
-├── app.js                   # Main app file - ties everything together
-├── index.html               # HTML entry point
-└── README.md               # This file
+├── index.html               # Vite entry HTML
+├── package.json             # Project metadata & scripts
+├── vite.config.js           # Vite configuration
+├── src/
+│   ├── App.vue              # Root Vue component
+│   ├── main.js              # Application bootstrap with Vite
+│   ├── models/
+│   │   └── Task.vue         # Task class & TaskStore
+│   ├── controllers/
+│   │   └── TaskController.vue # Handles task operations
+│   └── views/
+│       ├── TaskManager.vue  # Main task management view
+│       ├── TaskItem.vue     # Task list item
+│       └── style.css        # Styling
+└── README.md                # This file
 
 ## 📦 Models Layer
 
@@ -62,7 +67,7 @@ vue-demo/
 - Handle data persistence (localStorage)
 - Provide methods to query and manipulate data
 
-### Task Model (`models/Task.js`)
+### Task Model (`src/models/Task.vue`)
 
 ```javascript
 // Individual task object
@@ -93,7 +98,7 @@ class TaskStore {
 - Provide data to Views for rendering
 - Notify Views when Model changes
 
-### TaskController (`controllers/TaskController.js`)
+### TaskController (`src/controllers/TaskController.vue`)
 
 ```javascript
 class TaskController {
@@ -110,6 +115,7 @@ class TaskController {
 
   // Notify system
   subscribe(listener)             // Register for updates
+  unsubscribe(listener)           // Remove listener when view unmounts
   notifyListeners()               // Tell Views about changes
 }
 ```
@@ -122,19 +128,19 @@ class TaskController {
 - Emit events when users interact
 - Stay reactive - update automatically when data changes
 
-### Vue Components (`views/components.js`)
+### Vue Components (`src/views/TaskManager.vue`, `src/views/TaskItem.vue`)
 
 #### TaskManager Component
 - Displays task input form
 - Shows task statistics (total, completed, remaining)
-- Lists all tasks using TaskItem component
-- Handles add, toggle, and delete events
+- Lists all tasks using `TaskItem` component
+- Handles add, toggle, and delete events via the controller
 
 #### TaskItem Component
 - Reusable component for individual tasks
 - Shows task text, checkbox, and delete button
 - Emits events back to parent component
-- Visual feedback for completed tasks
+- Provides visual feedback for completed tasks
 
 ## 🔄 How Everything Works Together
 
@@ -178,25 +184,27 @@ class TaskController {
 8. UI: Task visual state updated (strikethrough, color change)
 ```
 
-## 🚀 Quick Start
+## 🚀 Quick Start (Vite)
 
-### Method 1: Direct File Access
+### 1. Install Dependencies
 ```bash
-open /Users/justintavarez/Documents/VSC_Software_Dev_Work/vue-demo/index.html
+npm install
 ```
 
-### Method 2: Python HTTP Server
+### 2. Start the Dev Server
 ```bash
-cd /Users/justintavarez/Documents/VSC_Software_Dev_Work/vue-demo
-python3 -m http.server 5173
-# Then open: http://localhost:5173
+npm run dev
+# Vite will print a local URL (default: http://localhost:5173)
 ```
 
-### Method 3: Node.js HTTP Server
+### 3. Build for Production
 ```bash
-cd /Users/justintavarez/Documents/VSC_Software_Dev_Work/vue-demo
-npx http-server -p 5173
-# Then open: http://localhost:5173
+npm run build
+```
+
+### 4. Preview the Production Build
+```bash
+npm run preview
 ```
 
 ## 💡 Key Benefits of MVC
@@ -228,23 +236,26 @@ npx http-server -p 5173
 
 ## 📚 File Descriptions
 
-### `models/Task.js`
+### `src/models/Task.vue`
 Defines Task data model and TaskStore for managing a collection of tasks. Handles localStorage persistence and all task-related business logic.
 
-### `controllers/TaskController.js`
+### `src/controllers/TaskController.vue`
 Mediates between TaskStore (Model) and TaskManager (View). Handles all user interactions with tasks and notifies View of changes.
 
-### `views/components.js`
-Contains all Vue components (TaskManager, TaskItem). These are the UI layer of the MVC architecture.
+### `src/views/TaskManager.vue`
+Main task management view that handles input, renders stats, and lists all tasks. Communicates with the controller through props.
 
-### `views/style.css`
+### `src/views/TaskItem.vue`
+Reusable component for individual tasks with toggle and delete actions.
+
+### `src/views/style.css`
 Stylesheet with modern CSS including gradients, animations, and responsive design for the task management interface.
 
-### `app.js`
-Main application file. Instantiates models and controllers, configures Vue, and orchestrates the entire application.
+### `src/App.vue` & `src/main.js`
+Root Vue component and entry file that instantiate the model, controller, and mount the application via Vite.
 
 ### `index.html`
-HTML entry point. Includes Vue.js from CDN, loads styles, and imports app.js module.
+HTML entry point used by Vite to bootstrap the bundled application.
 
 ## 🎯 Learning Outcomes
 
@@ -261,6 +272,7 @@ After exploring this project, you'll understand:
 
 - **Vue.js 3** - Progressive JavaScript framework
 - **Composition API** - Vue's modern API for building components
+- **Vite** - Lightning-fast dev server & build tool
 - **ES6 Modules** - Code organization and imports
 - **localStorage** - Browser storage for persistence
 - **CSS3** - Modern styling with gradients and animations
