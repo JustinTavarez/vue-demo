@@ -55,8 +55,6 @@ The view dispatches events (`handleAddTask`, `handleToggleTask`, `handleDeleteTa
 | Event modifiers (`@keyup.enter`) | `src/views/TaskManager.vue` line 6 | Listens for specific key events without manual `event.key` checks. |
 | `$emit` | `src/views/TaskItem.vue` lines 7 and 10 | Sends custom events upward so parents can respond to user actions. |
 
-> Use this table as a quick reference when introducing Vue-specific syntax in the classroom. Each item links back to a concrete example in the repo.
-
 ## Quick Start
 
 1. Run `npm install` to install dependencies.
